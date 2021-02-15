@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <meta charset="UTF-8"/>
+    <title>Best products</title>
+    <h:outputStylesheet library="webjars" name="bootstrap/4.6.0/css/bootstrap.min-jsf.css"/>
+</h:head>
+
+<h:body>
+    <div class="container">
+        <h:dataTable id="dataTable" class="table" value="#{statsView.stats}"
+                     var="product">
+            <h:column>
+                <f:facet name="header">#</f:facet>
+                #{statsView.stats.indexOf(product) + 1}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Name</f:facet>
+                #{product.productDto.brandName}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Units sold</f:facet>
+                #{product.count}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Photo</f:facet>
+                <h:graphicImage width="75" value="#{product.productDto.url}"/>
+            </h:column>
+        </h:dataTable>
+    </div>
+
+    <h:form>
+        <f:websocket channel="stats" onmessage="function n(){console.log(123);}">
+            <f:ajax event="update" render="dataTable"/>
+        </f:websocket>
+    </h:form>
+</h:body>
+</html>
